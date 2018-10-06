@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using TuneIn.Models;
 
@@ -15,7 +16,7 @@ namespace TuneIn.Views
         {
             InitializeComponent();
 
-            var model = new TuneInModel();
+            var model = new TuneInModel(SynchronizationContext.Current);
             model.LoadConfig();
             this.model = model;
             this.DataContext = model;
@@ -33,7 +34,12 @@ namespace TuneIn.Views
 
         private void StartListeningButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.listener = ListenerThread.Listen(this.model);
+            this.listener = ListenerThread.Listen(this.model);
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.model.ClearLogs();
         }
     }
 }

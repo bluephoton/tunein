@@ -5,6 +5,6 @@
         void StartListening();
         void StopListening();
         void ClearLogs();
-        void Write(string text);
+        void AddTrace(TraceData trace);
     }
 }

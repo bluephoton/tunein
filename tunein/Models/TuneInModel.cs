@@ -6,22 +6,12 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace TuneIn.Models
 {
     class TuneInModel : ITuneIn, INotifyPropertyChanged
     {
-        private string log;
-        public string Log
-        {
-            get { return log; }
-            set
-            {
-                this.log = value;
-                this.FirePropertyChanged();
-            }
-        }
-
         private ObservableCollection<string> providers;
         public ObservableCollection<string> Providers
         {
@@ -34,6 +24,13 @@ namespace TuneIn.Models
         }
 
         private string selectedProvider;
+        private SynchronizationContext uiSyncCtx;
+
+        public TuneInModel(SynchronizationContext uiSyncCtx)
+        {
+            this.uiSyncCtx = uiSyncCtx;
+        }
+
         public string SelectedProvider
         {
             get { return this.selectedProvider; }
@@ -44,89 +41,7 @@ namespace TuneIn.Models
             }
         }
 
-        public ObservableCollection<TraceData> Traces
-        {
-            get
-            {
-                #region remove later
-                var traces = new TraceData[]
-                {
-                    new TraceData {
-                        Name="hello", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "Shopping", Opcode = "boring",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="from", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "slacking", Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="the", Level = 4, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "eating", Opcode = "boring",
-                        Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="Other", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "drinking", Opcode = "boring",
-                        Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="Side", Level = 3, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
-                        Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="Side", Level = 4, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
-                        Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="Side", Level = 2, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
-                        Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="Side", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(),  Task = "sleepin!", Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                    new TraceData {
-                        Name="Side", Level = 1, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                    },
-                };
-                #endregion
-                return new ObservableCollection<TraceData>(traces);
-            }
-        }
+        public ObservableCollection<TraceData> Traces { get; set; } = new ObservableCollection<TraceData>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -150,7 +65,7 @@ namespace TuneIn.Models
 
         public void ClearLogs()
         {
-            this.Log = string.Empty;
+            this.Traces.Clear();
         }
 
         public void StartListening()
@@ -163,9 +78,9 @@ namespace TuneIn.Models
             throw new System.NotImplementedException();
         }
 
-        public void Write(string text)
+        public void AddTrace(TraceData trace)
         {
-            this.Log += text;
+            uiSyncCtx.Send(x => this.Traces.Add(trace), null);
         }
 
         private void FirePropertyChanged([CallerMemberName] string name = default(string))

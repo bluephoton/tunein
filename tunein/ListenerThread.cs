@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers;
@@ -44,8 +45,8 @@ namespace TuneIn
                         var parser = new DynamicTraceEventParser(source);
                         parser.All += (TraceEvent data) =>
                         {
-                            var text = FormatEventData(data);
-                            model.Write(text);
+                            var trace = TraceEventToTraceData(data);
+                            model.AddTrace(trace);
                         };
 
                         session.EnableProvider("GuestAction.Telemetry");
@@ -58,36 +59,42 @@ namespace TuneIn
             this.eventSinkThread.Start();
         }
 
-        private string FormatEventData(TraceEvent data)
+        private TraceData TraceEventToTraceData(TraceEvent data)
         {
-            StringBuilder sb = new StringBuilder(500);
-            sb.AppendFormat("[TS={0}]", data.TimeStamp.ToString("o"));
-            
-            sb.AppendFormat("[PG={0}]", data.ProviderGuid);
-            sb.AppendFormat("[PN={0}]", data.ProviderName);
-            sb.AppendFormat("[CH={0}]", data.Channel);
-            sb.AppendFormat("[PID={0}]", data.ProcessID);
-            sb.AppendFormat("[TID={0}]", data.ThreadID);
+            return new TraceData
+            {
+                Timestamp = data.TimeStamp,
+                ProviderGuid = data.ProviderGuid,
+                ProviderName = data.ProviderName,
+                ProcessId = data.ProcessID,
+                ThreadId = data.ThreadID,
+                //data.Channel
 
-            sb.AppendFormat("[ID={0}]", data.ID);
-            sb.AppendFormat("[EV={0}]", data.EventName);
-            sb.AppendFormat("[LV={0}]", data.Level);
-            sb.AppendFormat("[KW={0}]", data.Keywords);     // since keywords can select events across activities/tasks I'm putting it as an event thing
+                Id = (int)data.ID,
+                Name = data.EventName,
+                Level = (int)data.Level,
+                //data.Keywords   // since keywords can select events across activities/tasks I'm putting it as an event thing - assuming it means what i think it means!
 
-            sb.AppendFormat("[AID={0}]", data.ActivityID);
-            sb.AppendFormat("[TSK={0}]", data.TaskName);
-            sb.AppendFormat("[OP={0}]", data.OpcodeName);
+                ActivityId = data.ActivityID,
+                Task = data.TaskName,
+                Opcode = data.OpcodeName,
 
-            sb.AppendFormat("[MSG={0}]", data.FormattedMessage);
+                Message = data.FormattedMessage,
+                Properties = this.GetPayload(data)
+            };
+        }
+
+        private IDictionary<string, string> GetPayload(TraceEvent data)
+        {
+            var payload = new Dictionary<string, string>();
 
             foreach (var name in data.PayloadNames)
             {
                 var index = data.PayloadIndex(name);
-                sb.AppendFormat("[{0}={1}]", name, data.PayloadString(index));
+                payload.Add(name, data.PayloadString(index));
             }
-            
-            sb.AppendLine();
-            return sb.ToString();
+
+            return payload;
         }
     }
 }

@@ -96,11 +96,11 @@
     </ApplicationDefinition>
     <Compile Include="Controls\CaptionCtrl.xaml.cs" />
     <Compile Include="Converters\CellValueConverter.cs" />
+    <Compile Include="Converters\DictionaryToJsonConverter.cs" />
     <Compile Include="Models\ITuneIn.cs" />
     <Compile Include="ListenerThread.cs" />
     <Compile Include="Models\TraceData.cs" />
     <Compile Include="Models\TuneInModel.cs" />
-    <Compile Include="TuneInTraceListener.cs" />
     <Page Include="Controls\CaptionCtrl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

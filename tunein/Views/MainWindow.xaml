@@ -13,6 +13,7 @@
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
         <cvs:CellValueConverter x:Key="cellToContent"/>
+        <cvs:DictionaryToJsonConverter x:Key="dictToJson"/>
     </Window.Resources>
     <Border Padding="5" BorderThickness="0" CornerRadius="4,4,4,4" Background="DarkSeaGreen">
         <Grid>
@@ -35,6 +36,7 @@
                               ItemsSource="{Binding Providers}" Text="{Binding SelectedProvider}"
                               IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" />
                     <Button Content="Start Listening" Padding="30,0" Margin="20,0,0,0" Click="StartListeningButton_Click"/>
+                    <Button Content="Clear" Padding="30,0" Margin="20,0,0,0" Click="ClearButton_Click"/>
                 </StackPanel>
             </Border>
 
@@ -57,7 +59,7 @@
                         <DataGridTextColumn Header="Task" Width="200" Binding="{Binding Task}"/>
                         <DataGridTextColumn Header="OpCode" Width="150" Binding="{Binding Opcode}"/>
                         <DataGridTextColumn Header="Message" Width="350" Binding="{Binding Message}"/>
-                        <DataGridTextColumn Header="Properties" Width="250" Binding="{Binding Properties}"/>
+                        <DataGridTextColumn Header="Properties" Width="250" Binding="{Binding Properties, Converter={StaticResource dictToJson}}"/>
                     </DataGrid.Columns>
                     <DataGrid.RowStyle>
                         <Style TargetType="{x:Type DataGridRow}">

@@ -3,9 +3,9 @@ using System.Threading;
 using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers;
 using Microsoft.Diagnostics.Tracing.Session;
-using tunein.Models;
+using TuneIn.Models;
 
-namespace tunein
+namespace TuneIn
 {
     class ListenerThread
     {

@@ -1,0 +1,97 @@
+﻿<Window x:Class="TuneIn.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cvs="clr-namespace:TuneIn.Converters"
+        xmlns:ctls="clr-namespace:TuneIn.Controls"
+        mc:Ignorable="d" AllowsTransparency="True" WindowStyle="None" SizeToContent="Manual" ResizeMode="NoResize"
+        Title="Tune In!">
+    <Window.Resources>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <cvs:CellValueConverter x:Key="cellToContent"/>
+    </Window.Resources>
+    <Border Padding="5" BorderThickness="0" CornerRadius="4,4,4,4" Background="DarkSeaGreen">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!--  Caption -->
+            <Border Grid.Row="0" Padding="2" BorderThickness="0" CornerRadius="4,4,0,0">
+                <ctls:CaptionCtrl Margin="2" FontSize="18"  FontWeight="Medium" Foreground="Black"/>
+            </Border>
+
+            <Border Grid.Row="1" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Provider Name:" />
+                    <ComboBox Margin="10, 0" Width="400" VerticalAlignment="Center" IsEditable="True"
+                              ItemsSource="{Binding Providers}" Text="{Binding SelectedProvider}"
+                              IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" />
+                    <Button Content="Start Listening" Padding="30,0" Margin="20,0,0,0" Click="StartListeningButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+                <DataGrid x:Name="gridTraces" ItemsSource="{Binding Traces}" MinHeight="600" IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Background" Value="WhiteSmoke" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                            <Setter Property="Padding" Value="3,2"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" Width="220" />
+                        <DataGridTextColumn Header="Event Name" Width="150" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Activity Id" Width="80" Binding="{Binding ActivityId}"/>
+                        <DataGridTextColumn Header="Task" Width="200" Binding="{Binding Task}"/>
+                        <DataGridTextColumn Header="OpCode" Width="150" Binding="{Binding Opcode}"/>
+                        <DataGridTextColumn Header="Message" Width="350" Binding="{Binding Message}"/>
+                        <DataGridTextColumn Header="Properties" Width="250" Binding="{Binding Properties}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Level}" Value="1">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Background" Value="Red" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="2">
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Background" Value="Red" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="3">
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="Background" Value="Yellow" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="4">
+                                    <Setter Property="Foreground" Value="Blue" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Border>
+
+            <!-- Cell Text Viewer -->
+            <Border Grid.Row="3" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+                <Expander Header="Field details" IsExpanded="False">
+                    <TextBlock Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
+                                Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
+                </Expander>
+            </Border>
+
+        </Grid>
+    </Border>
+</Window>

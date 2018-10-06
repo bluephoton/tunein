@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace tunein.Models
+namespace TuneIn.Models
 {
     public class TraceData
     {

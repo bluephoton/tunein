@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace tunein.Models
+namespace TuneIn.Models
 {
-    class TuneIn : ITuneIn, INotifyPropertyChanged
+    class TuneInModel : ITuneIn, INotifyPropertyChanged
     {
         private string log;
         public string Log
@@ -14,7 +18,29 @@ namespace tunein.Models
             set
             {
                 this.log = value;
-                this.FirePropertyChanged("Log");
+                this.FirePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<string> providers;
+        public ObservableCollection<string> Providers
+        {
+            get { return this.providers; }
+            set
+            {
+                this.providers = value;
+                this.FirePropertyChanged();
+            }
+        }
+
+        private string selectedProvider;
+        public string SelectedProvider
+        {
+            get { return this.selectedProvider; }
+            set
+            {
+                this.selectedProvider = value;
+                this.FirePropertyChanged();
             }
         }
 
@@ -22,6 +48,7 @@ namespace tunein.Models
         {
             get
             {
+                #region remove later
                 var traces = new TraceData[]
                 {
                     new TraceData {
@@ -96,12 +123,30 @@ namespace tunein.Models
                             }
                     },
                 };
-
+                #endregion
                 return new ObservableCollection<TraceData>(traces);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void LoadConfig()
+        {
+            var configFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{Properties.Resources.AppName}.config");
+            if(configFile != null && File.Exists(configFile))
+            {
+                using (StreamReader sr = new StreamReader(new FileStream(configFile, FileMode.Open)))
+                {
+                    var txt = sr.ReadToEnd();
+                    dynamic t = JsonConvert.DeserializeObject(txt);
+                    if(t != null)
+                    {
+                        this.providers = new ObservableCollection<string>(t.Providers.ToObject<string[]>());
+                        this.SelectedProvider = t.SelectedProvider.ToObject<string>();
+                    }
+                }
+            }
+        }
 
         public void ClearLogs()
         {
@@ -123,7 +168,7 @@ namespace tunein.Models
             this.Log += text;
         }
 
-        private void FirePropertyChanged(string name)
+        private void FirePropertyChanged([CallerMemberName] string name = default(string))
         {
             if(this.PropertyChanged != null && !string.IsNullOrWhiteSpace(name))
             {

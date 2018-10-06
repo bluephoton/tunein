@@ -1,4 +1,4 @@
-﻿namespace tunein.Models
+﻿namespace TuneIn.Models
 {
     interface ITuneIn
     {

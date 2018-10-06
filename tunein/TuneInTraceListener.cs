@@ -2,7 +2,7 @@
 using System.Diagnostics.Tracing;
 using System.Text;
 
-namespace tunein.Models
+namespace TuneIn.Models
 {
     class TuneInTraceListener : EventListener
     {

@@ -1,8 +1,9 @@
-﻿<Application x:Class="tunein.App"
+﻿<Application x:Class="TuneIn.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:tunein"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:TuneIn"
+             StartupUri="Views/MainWindow.xaml"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
          
     </Application.Resources>

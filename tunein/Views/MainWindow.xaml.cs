@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Windows;
-using tunein.Models;
+using TuneIn.Models;
 
-namespace tunein
+namespace TuneIn.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly TuneInModel model;
         private ListenerThread listener;
         public MainWindow()
         {
             InitializeComponent();
 
-            var model = new TuneIn();
+            var model = new TuneInModel();
+            model.LoadConfig();
+            this.model = model;
             this.DataContext = model;
-
-            this.listener = ListenerThread.Listen(model);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -28,6 +29,11 @@ namespace tunein
             }
 
             base.OnClosed(e);
+        }
+
+        private void StartListeningButton_Click(object sender, RoutedEventArgs e)
+        {
+            //this.listener = ListenerThread.Listen(this.model);
         }
     }
 }

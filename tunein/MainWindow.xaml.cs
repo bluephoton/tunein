@@ -17,7 +17,7 @@ namespace tunein
             var model = new TuneIn();
             this.DataContext = model;
 
-            //this.listener = ListenerThread.Listen(model);
+            this.listener = ListenerThread.Listen(model);
         }
 
         protected override void OnClosed(EventArgs e)

@@ -91,11 +91,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ActivityData.cs" />
-    <Compile Include="Models\EventData.cs" />
+    <Compile Include="Converters\CellValueConverter.cs" />
     <Compile Include="Models\ITuneIn.cs" />
     <Compile Include="ListenerThread.cs" />
-    <Compile Include="Models\ProviderData.cs" />
     <Compile Include="Models\TraceData.cs" />
     <Compile Include="Models\TuneIn.cs" />
     <Compile Include="TuneInTraceListener.cs" />

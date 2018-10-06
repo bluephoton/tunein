@@ -3,19 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:tunein"
-        mc:Ignorable="d" AllowsTransparency="True" WindowStyle="None"
+        xmlns:cvs="clr-namespace:tunein.Converters"
+        mc:Ignorable="d" AllowsTransparency="True" WindowStyle="None" SizeToContent="Height"
         Title="Tune In!">
     <Window.Resources>
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
+        <cvs:CellValueConverter x:Key="cellToContent"/>
     </Window.Resources>
     <Grid>
         <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="DarkSeaGreen">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Stretch">
-                <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="BurlyWood">
+                <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="Transparent">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Provider Name:" />
                         <TextBox Margin="10, 0" Width="400" Text="GuestAction.Telemetry" VerticalAlignment="Center"/>
@@ -23,49 +24,53 @@
                     </StackPanel>
                 </Border>
                 <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
-                    <ListView x:Name="lvTraces" ItemsSource="{Binding Traces}" MinHeight="600">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Timestamp" Width="220" DisplayMemberBinding="{Binding EventData.Timestamp, StringFormat=o}"/>
-                                <GridViewColumn Header="Event Name" Width="150" DisplayMemberBinding="{Binding EventData.Name}"/>
-                                <!-- Color coded, hence no need for a column really!
-                                <GridViewColumn Header="Level" Width="50" DisplayMemberBinding="{Binding EventData.Level}"/>
-                                -->
-                                <GridViewColumn Header="Activity Id" Width="80" DisplayMemberBinding="{Binding ActivityData.Id}"/>
-                                <GridViewColumn Header="Task" Width="200" DisplayMemberBinding="{Binding ActivityData.Task}"/>
-                                <GridViewColumn Header="OpCode" Width="200" DisplayMemberBinding="{Binding ActivityData.Opcode}"/>
-                                <GridViewColumn Header="Message" Width="500" DisplayMemberBinding="{Binding ActivityData.Message}"/>
-                                <GridViewColumn Header="Properties" Width="500" DisplayMemberBinding="{Binding ActivityData.Properties}"/>
-                            </GridView>
-                        </ListView.View>
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
+                    <DataGrid x:Name="gridTraces" ItemsSource="{Binding Traces}" MinHeight="600" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" Width="220" />
+                            <DataGridTextColumn Header="Event Name" Width="150" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Activity Id" Width="80" Binding="{Binding ActivityId}"/>
+                            <DataGridTextColumn Header="Task" Width="200" Binding="{Binding Task}"/>
+                            <DataGridTextColumn Header="OpCode" Width="200" Binding="{Binding Opcode}"/>
+                            <DataGridTextColumn Header="Message" Width="300" Binding="{Binding Message}"/>
+                            <DataGridTextColumn Header="Properties" Width="500" Binding="{Binding Properties}"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding EventData.Level}" Value="1">
+                                    <DataTrigger Binding="{Binding Level}" Value="1">
                                         <Setter Property="Foreground" Value="Red" />
                                         <Setter Property="FontWeight" Value="SemiBold" />
                                         <Setter Property="Background" Value="Yellow" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EventData.Level}" Value="2">
+                                    <DataTrigger Binding="{Binding Level}" Value="2">
                                         <Setter Property="Foreground" Value="Red" />
                                         <Setter Property="FontWeight" Value="SemiBold" />
                                         <Setter Property="Background" Value="Yellow" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EventData.Level}" Value="3">
+                                    <DataTrigger Binding="{Binding Level}" Value="3">
                                         <Setter Property="Foreground" Value="OrangeRed" />
                                         <Setter Property="FontWeight" Value="SemiBold" />
                                         <Setter Property="Background" Value="MintCream" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EventData.Level}" Value="4">
+                                    <DataTrigger Binding="{Binding Level}" Value="4">
                                         <Setter Property="Foreground" Value="Blue" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
                 </Border>
                 <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
-                    <TextBlock Text="{Binding ElementName=lvTraces, Path=SelectedItem}" MinHeight="100"/>
+                    <Expander>
+                        <TextBlock Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
+                                   Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
+                    </Expander>
                 </Border>
             </StackPanel>
         </Border>

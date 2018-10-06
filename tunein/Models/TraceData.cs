@@ -1,9 +1,27 @@
-﻿namespace tunein.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace tunein.Models
 {
     public class TraceData
     {
-        public EventData EventData { get; set; }
-        public ProviderData ProviderData { get; set; }
-        public ActivityData ActivityData { get; set; }
+        // Event specific
+        public DateTime Timestamp { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Level { get; set; }
+
+        // Provider specific
+        public string ProviderName { get; set; }
+        public Guid ProviderGuid { get; set; }
+
+        // Activity specific
+        public Guid ActivityId { get; set; }
+        public int ProcessId { get; set; }
+        public int ThreadId { get; set; }
+        public string Task { get; set; }
+        public string Opcode { get; set; }
+        public string Message { get; set; }
+        public IDictionary<string, string> Properties { get; set; }
     }
 }

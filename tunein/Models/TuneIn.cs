@@ -25,129 +25,75 @@ namespace tunein.Models
                 var traces = new TraceData[]
                 {
                     new TraceData {
-                        EventData = new EventData{  Name="hello", Level = 5, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "Shopping",
-                            Opcode = "boring",
+                        Name="hello", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "Shopping", Opcode = "boring",
                             Properties = new Dictionary<string, string>()
                             {
                                 { "foo", "bar"}
                             }
-                        }
                     },
                     new TraceData {
-                        EventData = new EventData{  Name="from", Level = 5, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "slacking",
-                            Opcode = "boring",
+                        Name="from", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "slacking", Opcode = "boring",
                             Message = "the brown fox jumped into the black box",
                             Properties = new Dictionary<string, string>()
                             {
                                 { "foo", "bar"}
                             }
-                        }
                     },
                     new TraceData {
-                        EventData = new EventData{  Name="the", Level = 4, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "eating",
-                            Opcode = "boring",
+                        Name="the", Level = 4, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "eating", Opcode = "boring",
+                        Message = "the brown fox jumped into the black box",
+                            Properties = new Dictionary<string, string>()
+                            {
+                                { "foo", "bar"}
+                            }
+                    },
+                    new TraceData {
+                        Name="Other", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "drinking", Opcode = "boring",
+                        Message = "the brown fox jumped into the black box",
+                            Properties = new Dictionary<string, string>()
+                            {
+                                { "foo", "bar"}
+                            }
+                    },
+                    new TraceData {
+                        Name="Side", Level = 3, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
+                        Message = "the brown fox jumped into the black box",
+                            Properties = new Dictionary<string, string>()
+                            {
+                                { "foo", "bar"}
+                            }
+                    },
+                    new TraceData {
+                        Name="Side", Level = 4, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
+                        Message = "the brown fox jumped into the black box",
+                            Properties = new Dictionary<string, string>()
+                            {
+                                { "foo", "bar"}
+                            }
+                    },
+                    new TraceData {
+                        Name="Side", Level = 2, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
+                        Message = "the brown fox jumped into the black box",
+                            Properties = new Dictionary<string, string>()
+                            {
+                                { "foo", "bar"}
+                            }
+                    },
+                    new TraceData {
+                        Name="Side", Level = 5, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(),  Task = "sleepin!", Opcode = "boring",
                             Message = "the brown fox jumped into the black box",
                             Properties = new Dictionary<string, string>()
                             {
                                 { "foo", "bar"}
                             }
-                        }
                     },
                     new TraceData {
-                        EventData = new EventData{  Name="Other", Level = 5, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "drinking",
-                            Opcode = "boring",
+                        Name="Side", Level = 1, Timestamp = DateTime.Now, ActivityId = Guid.NewGuid(), Task = "sleepin!", Opcode = "boring",
                             Message = "the brown fox jumped into the black box",
                             Properties = new Dictionary<string, string>()
                             {
                                 { "foo", "bar"}
                             }
-                        }
-                    },
-                    new TraceData {
-                        EventData = new EventData{  Name="Side", Level = 3, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "sleepin!",
-                            Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                        }
-                    },
-                    new TraceData {
-                        EventData = new EventData{  Name="Side", Level = 4, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "sleepin!",
-                            Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                        }
-                    },
-                    new TraceData {
-                        EventData = new EventData{  Name="Side", Level = 2, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "sleepin!",
-                            Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                        }
-                    },
-                    new TraceData {
-                        EventData = new EventData{  Name="Side", Level = 5, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "sleepin!",
-                            Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                        }
-                    },
-                    new TraceData {
-                        EventData = new EventData{  Name="Side", Level = 1, Timestamp = DateTime.Now},
-                        ActivityData = new ActivityData
-                        {
-                            Id = Guid.NewGuid(),
-                            Task = "sleepin!",
-                            Opcode = "boring",
-                            Message = "the brown fox jumped into the black box",
-                            Properties = new Dictionary<string, string>()
-                            {
-                                { "foo", "bar"}
-                            }
-                        }
                     },
                 };
 

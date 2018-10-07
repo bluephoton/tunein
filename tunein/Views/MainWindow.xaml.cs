@@ -32,9 +32,21 @@ namespace TuneIn.Views
             base.OnClosed(e);
         }
 
-        private void StartListeningButton_Click(object sender, RoutedEventArgs e)
+        private void ToggleListeningButton_Click(object sender, RoutedEventArgs e)
         {
-            this.listener = ListenerThread.Listen(this.model);
+            if (!this.model.IsListening)
+            {
+                this.listener = ListenerThread.Listen(this.model);
+                this.model.IsListening = true;
+            }
+            else
+            {
+                if (this.listener != null)
+                {
+                    this.listener.StopListening();
+                    this.model.IsListening = false;
+                }
+            }
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)

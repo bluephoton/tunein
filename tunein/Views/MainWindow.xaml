@@ -14,14 +14,16 @@
         </Style>
         <cvs:CellValueConverter x:Key="cellToContent"/>
         <cvs:DictionaryToJsonConverter x:Key="dictToJson"/>
+        <BooleanToVisibilityConverter x:Key="bool2vis"/>
     </Window.Resources>
     <Border Padding="5" BorderThickness="0" CornerRadius="4,4,4,4" Background="DarkSeaGreen">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!--  Caption -->
@@ -29,19 +31,57 @@
                 <ctls:CaptionCtrl Margin="2" FontSize="18"  FontWeight="Medium" Foreground="Black"/>
             </Border>
 
-            <Border Grid.Row="1" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+            <Border Grid.Row="1" Margin="5" BorderThickness="4" CornerRadius="8" Background="YellowGreen" BorderBrush="WhiteSmoke" Visibility="{Binding IsHelpRequested, Converter={StaticResource bool2vis}}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="10" Foreground="DarkBlue" FontSize="16" TextWrapping="Wrap">
+                        <Run Text="Please feel free to inspect"/>
+                        <Run FontStyle="Italic" Foreground="Black" FontWeight="SemiBold" Text="TuneIn.Config"/>
+                        <Run Text=", you may find something useful there!"/>
+                        <Run Text="For more information, suggestions, or to report a bug, please contact"/>
+                        <Run FontWeight="SemiBold" Foreground="Blue" Text="Mohamed Enein (menein@microsoft.com)"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Provider Name:" />
                     <ComboBox Margin="10, 0" Width="400" VerticalAlignment="Center" IsEditable="True"
                               ItemsSource="{Binding Providers}" Text="{Binding SelectedProvider}"
                               IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" />
-                    <Button Content="Start Listening" Padding="30,0" Margin="20,0,0,0" Click="StartListeningButton_Click"/>
-                    <Button Content="Clear" Padding="30,0" Margin="20,0,0,0" Click="ClearButton_Click"/>
+                    <Button x:Name="listenButton" Padding="30,0" Margin="20,0,0,0" Click="ToggleListeningButton_Click" FontWeight="Bold">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsListening}" Value="true">
+                                        <Setter Property="Content" Value="Stop Listening"/>
+                                        <Setter Property="Foreground" Value="Red"/>
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimationUsingKeyFrames AutoReverse="True" RepeatBehavior="Forever"
+                                                                     Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)">
+                                                        <LinearColorKeyFrame KeyTime="0:0:0.0" Value="Red"/>
+                                                        <LinearColorKeyFrame KeyTime="0:0:1.0" Value="Black"/>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsListening}" Value="false">
+                                        <Setter Property="Content" Value="Start Listening"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="Clear" Padding="30,0" Margin="20,0,0,0" Click="ClearButton_Click" FontWeight="Bold"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row="2" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
-                <DataGrid x:Name="gridTraces" ItemsSource="{Binding Traces}" MinHeight="600" IsReadOnly="True" AutoGenerateColumns="False">
+            <Border Grid.Row="3" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+                <DataGrid x:Name="gridTraces" ItemsSource="{Binding Traces}" MinHeight="600" IsReadOnly="True" AutoGenerateColumns="False" SelectionUnit="Cell">
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="FontSize" Value="14"/>
@@ -87,13 +127,26 @@
             </Border>
 
             <!-- Cell Text Viewer -->
-            <Border Grid.Row="3" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
-                <Expander Header="Field details" IsExpanded="False">
-                    <TextBlock Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
+            <Border Grid.Row="4" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+                <Expander x:Name="expander" Header="Field details" IsExpanded="False" ExpandDirection="Down">
+                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer.Style>
+                            <Style TargetType="ScrollViewer">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=expander, Path=IsExpanded}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=expander, Path=IsExpanded}" Value="false">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ScrollViewer.Style>
+                        <TextBlock Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
                                 Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
+                    </ScrollViewer>
                 </Expander>
             </Border>
-
         </Grid>
     </Border>
 </Window>

@@ -15,6 +15,7 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         
         <Image Grid.Column="0" Source="/TuneIn;component/Assets/icon.png"/>
@@ -23,11 +24,13 @@
             <TextBlock Margin="5,0,0,0" Text="Tune In!" FontFamily="Lucida Handwriting" VerticalAlignment="Center" />
         </Border>
 
-        <Button Grid.Column="2" Name="Minimize" Margin="2" Padding="6,0" Content="─" FontSize="10pt" FontWeight="Medium" Foreground="DarkRed"
+        <ToggleButton Grid.Column="2" Name="Help" Margin="2" Padding="6,0" Content="🐞" FontSize="10pt" FontWeight="Medium"
+                Click="Help_OnClick"/>
+        <Button Grid.Column="3" Name="Minimize" Margin="2" Padding="6,0" Content="─" FontSize="10pt" FontWeight="Medium" Foreground="DarkRed"
                 Click="Minimize_OnClick"/>
-        <Button Grid.Column="3" Name="MaximizeRestoreButton" Margin="2" Padding="6,0" Content="▢" FontSize="10pt" FontWeight="ExtraBold" Foreground="DarkRed"
+        <Button Grid.Column="4" Name="MaximizeRestoreButton" Margin="2" Padding="6,0" Content="▢" FontSize="10pt" FontWeight="ExtraBold" Foreground="DarkRed"
                 Click="MaximizeRestoreButton_OnClick"/>
-        <Button Grid.Column="4" Name="CloseButton" Margin="2" Padding="6,0" Content="X" FontSize="10pt" FontWeight="Medium" Foreground="DarkRed"
+        <Button Grid.Column="5" Name="CloseButton" Margin="2" Padding="6,0" Content="X" FontSize="10pt" FontWeight="Medium" Foreground="DarkRed"
                 Click="CloseButton_OnClick"/>
     </Grid>
 </UserControl>

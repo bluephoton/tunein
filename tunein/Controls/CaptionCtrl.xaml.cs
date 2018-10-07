@@ -2,6 +2,7 @@
 {
     using System.Windows;
     using System.Windows.Input;
+    using TuneIn.Models;
 
     /// <summary>
     /// Interaction logic for CaptionCtrl.xaml
@@ -39,6 +40,15 @@
         private void Minimize_OnClick(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void Help_OnClick(object sender, RoutedEventArgs e)
+        {
+            var model = this.DataContext as TuneInModel;
+            if(model != null)
+            {
+                model.IsHelpRequested ^= true;
+            }
         }
     }
 }

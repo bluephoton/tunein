@@ -61,6 +61,15 @@ namespace TuneIn
 
         private TraceData TraceEventToTraceData(TraceEvent data)
         {
+            var payload = this.GetPayload(data);
+
+            string message;
+            // Not sure where FormattedMessage come from! If its not there, I'll use payload["Message"] and remove it from payload. Otherwise, will not do anything to payload.
+            if(payload.TryGetValue("Message", out message) && string.IsNullOrWhiteSpace(data.FormattedMessage))
+            {
+                payload.Remove("Message");
+            }
+
             return new TraceData
             {
                 Timestamp = data.TimeStamp,
@@ -79,8 +88,8 @@ namespace TuneIn
                 Task = data.TaskName,
                 Opcode = data.OpcodeName,
 
-                Message = data.FormattedMessage,
-                Properties = this.GetPayload(data)
+                Message = string.IsNullOrWhiteSpace(data.FormattedMessage) ? message : data.FormattedMessage,
+                Properties = payload
             };
         }
 

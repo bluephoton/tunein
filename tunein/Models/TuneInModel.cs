@@ -13,6 +13,31 @@ namespace TuneIn.Models
     class TuneInModel : ITuneIn, INotifyPropertyChanged
     {
         private ObservableCollection<string> providers;
+        private string selectedProvider;
+        private SynchronizationContext uiSyncCtx;
+        private bool isListening { get; set; }
+        private bool isHelpRequested;
+
+        public bool IsHelpRequested
+        {
+            get { return this.isHelpRequested; }
+            set
+            {
+                this.isHelpRequested = value;
+                this.FirePropertyChanged();
+            }
+        }
+
+        public bool IsListening
+        {
+            get { return this.isListening; }
+            set
+            {
+                this.isListening = value;
+                this.FirePropertyChanged();
+            }
+        }
+
         public ObservableCollection<string> Providers
         {
             get { return this.providers; }
@@ -22,9 +47,6 @@ namespace TuneIn.Models
                 this.FirePropertyChanged();
             }
         }
-
-        private string selectedProvider;
-        private SynchronizationContext uiSyncCtx;
 
         public TuneInModel(SynchronizationContext uiSyncCtx)
         {

@@ -22,8 +22,8 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <!--  Caption -->
@@ -127,26 +127,16 @@
             </Border>
 
             <!-- Cell Text Viewer -->
-            <Border Grid.Row="4" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
-                <Expander x:Name="expander" Header="Field details" IsExpanded="False" ExpandDirection="Down">
-                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <ScrollViewer.Style>
-                            <Style TargetType="ScrollViewer">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=expander, Path=IsExpanded}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=expander, Path=IsExpanded}" Value="false">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ScrollViewer.Style>
-                        <TextBlock Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
-                                Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
-                    </ScrollViewer>
-                </Expander>
-            </Border>
+            <DockPanel x:Name="dockPanel" Grid.Row="4" LastChildFill="{Binding ElementName=expander, Path=IsExpanded}">
+                <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat" DockPanel.Dock="Top">
+                    <Expander x:Name="expander" Header="Field details" IsExpanded="False" ExpandDirection="Down">
+                        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <TextBlock Margin="5" Padding="5" MinHeight="200" TextWrapping="Wrap" Background="White"
+                                    Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
+                        </ScrollViewer>
+                    </Expander>
+                </Border>
+            </DockPanel>
         </Grid>
     </Border>
 </Window>

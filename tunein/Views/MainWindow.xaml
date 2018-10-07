@@ -6,7 +6,7 @@
         xmlns:cvs="clr-namespace:TuneIn.Converters"
         xmlns:ctls="clr-namespace:TuneIn.Controls"
         mc:Ignorable="d" AllowsTransparency="True" WindowStyle="None" SizeToContent="Manual" ResizeMode="NoResize"
-        Title="Tune In!">
+        Title="Tune In!" Background="Transparent">
     <Window.Resources>
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -16,7 +16,7 @@
         <cvs:DictionaryToJsonConverter x:Key="dictToJson"/>
         <BooleanToVisibilityConverter x:Key="bool2vis"/>
     </Window.Resources>
-    <Border Padding="5" BorderThickness="0" CornerRadius="4,4,4,4" Background="DarkSeaGreen">
+    <Border Padding="5" BorderThickness="1" CornerRadius="8" Background="BurlyWood">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

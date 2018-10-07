@@ -153,7 +153,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\icon.png" />
+    <Resource Include="Assets\icon.png" />
   </ItemGroup>
   <!--
   <ItemGroup>

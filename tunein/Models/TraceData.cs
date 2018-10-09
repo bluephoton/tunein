@@ -22,6 +22,6 @@ namespace TuneIn.Models
         public string Task { get; set; }
         public string Opcode { get; set; }
         public string Message { get; set; }
-        public IDictionary<string, string> Properties { get; set; }
+        public IDictionary<string, string> Payload { get; set; }
     }
 }

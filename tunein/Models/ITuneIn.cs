@@ -1,7 +1,8 @@
 ﻿namespace TuneIn.Models
 {
-    interface ITuneIn
+    interface ITuneInModel
     {
+        string SelectedProvider { get; }
         void StartListening();
         void StopListening();
         void ClearLogs();

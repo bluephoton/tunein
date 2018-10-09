@@ -12,14 +12,14 @@ namespace TuneIn
     {
         private TraceEventSession session;
         private Thread eventSinkThread;
-        private readonly ITuneIn model;
+        private readonly ITuneInModel model;
 
-        internal ListenerThread(ITuneIn model)
+        internal ListenerThread(ITuneInModel model)
         {
             this.model = model;
         }
 
-        internal static ListenerThread Listen(ITuneIn model)
+        internal static ListenerThread Listen(ITuneInModel model)
         {
             var listener = new ListenerThread(model);
             listener.StartListening();
@@ -49,7 +49,7 @@ namespace TuneIn
                             model.AddTrace(trace);
                         };
 
-                        session.EnableProvider("GuestAction.Telemetry");
+                        session.EnableProvider(this.model.SelectedProvider);
                         source.Process();
                         var t = source.CanReset;
                     }
@@ -72,7 +72,7 @@ namespace TuneIn
 
             return new TraceData
             {
-                Timestamp = data.TimeStamp,
+                Timestamp = data.TimeStamp.ToUniversalTime(),
                 ProviderGuid = data.ProviderGuid,
                 ProviderName = data.ProviderName,
                 ProcessId = data.ProcessID,
@@ -89,7 +89,7 @@ namespace TuneIn
                 Opcode = data.OpcodeName,
 
                 Message = string.IsNullOrWhiteSpace(data.FormattedMessage) ? message : data.FormattedMessage,
-                Properties = payload
+                Payload = payload
             };
         }
 

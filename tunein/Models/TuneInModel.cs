@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace TuneIn.Models
 {
-    class TuneInModel : ITuneIn, INotifyPropertyChanged
+    class TuneInModel : ITuneInModel, INotifyPropertyChanged
     {
         private ObservableCollection<string> providers;
         private string selectedProvider;

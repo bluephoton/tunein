@@ -104,6 +104,7 @@
                     <DataGrid.RowStyle>
                         <Style TargetType="{x:Type DataGridRow}">
                             <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="MaxHeight" Value="200"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Level}" Value="1">
                                     <Setter Property="Foreground" Value="White" />

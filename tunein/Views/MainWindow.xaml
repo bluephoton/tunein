@@ -23,6 +23,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
@@ -31,6 +32,7 @@
                 <ctls:CaptionCtrl Margin="2" FontSize="18"  FontWeight="Medium" Foreground="Black"/>
             </Border>
 
+            <!-- Help (hidden by default) -->
             <Border Grid.Row="1" Margin="5" BorderThickness="4" CornerRadius="8" Background="YellowGreen" BorderBrush="WhiteSmoke" Visibility="{Binding IsHelpRequested, Converter={StaticResource bool2vis}}">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Margin="10" Foreground="DarkBlue" FontSize="16" TextWrapping="Wrap">
@@ -43,6 +45,7 @@
                 </StackPanel>
             </Border>
 
+            <!-- Toolbar -->
             <Border Grid.Row="2" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Provider Name:" />
@@ -80,6 +83,7 @@
                 </StackPanel>
             </Border>
 
+            <!-- Telemetry table -->
             <Border Grid.Row="3" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
                 <DataGrid x:Name="gridTraces" ItemsSource="{Binding Traces}" MinHeight="600" IsReadOnly="True" AutoGenerateColumns="False" SelectionUnit="Cell">
                     <DataGrid.ColumnHeaderStyle>
@@ -128,16 +132,14 @@
             </Border>
 
             <!-- Cell Text Viewer -->
-            <DockPanel x:Name="dockPanel" Grid.Row="4" LastChildFill="{Binding ElementName=expander, Path=IsExpanded}">
-                <Border Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat" DockPanel.Dock="Top">
-                    <Expander x:Name="expander" Header="Field details" IsExpanded="False" ExpandDirection="Down">
-                        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto"  MaxHeight="200">
-                            <TextBlock Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
-                                    Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
-                        </ScrollViewer>
-                    </Expander>
-                </Border>
-            </DockPanel>
+            <Border Grid.Row="5" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat" >
+                <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                    <TextBlock x:Name="cellDetail" Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
+                               Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
+                </ScrollViewer>
+            </Border>
+
+            <GridSplitter Margin="5,0" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="SaddleBrown" Height="3" />
         </Grid>
     </Border>
 </Window>

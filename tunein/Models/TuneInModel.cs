@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -17,6 +15,17 @@ namespace TuneIn.Models
         private SynchronizationContext uiSyncCtx;
         private bool isListening { get; set; }
         private bool isHelpRequested;
+        private ObservableCollection<string> hiddenColumns;
+
+        public ObservableCollection<string> HiddenColumns
+        {
+            get { return this.hiddenColumns; }
+            set
+            {
+                this.hiddenColumns = value;
+                this.FirePropertyChanged();
+            }
+        }
 
         public bool IsHelpRequested
         {
@@ -78,8 +87,9 @@ namespace TuneIn.Models
                     dynamic t = JsonConvert.DeserializeObject(txt);
                     if(t != null)
                     {
-                        this.providers = new ObservableCollection<string>(t.Providers.ToObject<string[]>());
-                        this.SelectedProvider = t.SelectedProvider.ToObject<string>();
+                        this.providers = new ObservableCollection<string>(t.Providers?.ToObject<string[]>() ?? new string[] { });
+                        this.SelectedProvider = t.SelectedProvider?.ToObject<string>() ?? string.Empty;
+                        this.HiddenColumns = new ObservableCollection<string>(t.HiddenColumns?.ToObject<string[]>() ?? new string[] { });
                     }
                 }
             }

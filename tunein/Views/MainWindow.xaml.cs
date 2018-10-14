@@ -20,6 +20,16 @@ namespace TuneIn.Views
             model.LoadConfig();
             this.model = model;
             this.DataContext = model;
+
+            foreach (var column in this.gridTraces.Columns)
+            {
+                if(model.HiddenColumns.Contains(column.Header.ToString()))
+                {
+                    column.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            
         }
 
         protected override void OnClosed(EventArgs e)

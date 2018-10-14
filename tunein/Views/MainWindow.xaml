@@ -99,10 +99,10 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp, StringFormat=o}" Width="220" />
                         <DataGridTextColumn Header="Event Name" Width="150" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Activity Id" Width="80" Binding="{Binding ActivityId}"/>
+                        <DataGridTextColumn Header="Activity Id" Width="280" Binding="{Binding ActivityId}"/>
                         <DataGridTextColumn Header="Task" Width="200" Binding="{Binding Task}"/>
                         <DataGridTextColumn Header="OpCode" Width="150" Binding="{Binding Opcode}"/>
-                        <DataGridTextColumn Header="Message" Width="350" Binding="{Binding Message}"/>
+                        <DataGridTextColumn Header="Message" Width="*" Binding="{Binding Message}"/>
                         <DataGridTextColumn Header="Payload" Width="250" Binding="{Binding Payload, Converter={StaticResource dictToJson}}"/>
                     </DataGrid.Columns>
                     <DataGrid.RowStyle>

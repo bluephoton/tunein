@@ -20,7 +20,7 @@
 
         <Image Grid.Column="0" Width="24" Height="24" Source="/TuneIn;component/Assets/icon.png"/>
         <Border Grid.Column="1">
-            <TextBlock Margin="5,0,0,0" Text=" Tune In Baby!" FontFamily="Lucida Handwriting" VerticalAlignment="Center"/>
+            <TextBlock Margin="5,0,0,0" Text=" Tune In!" FontFamily="Lucida Handwriting" VerticalAlignment="Center"/>
         </Border>
 
         <ToggleButton Grid.Column="2" Name="Help" Margin="2" Padding="6,0" Content="🐞" FontSize="10pt" FontWeight="Medium"

@@ -51,7 +51,6 @@ namespace TuneIn
 
                         session.EnableProvider(this.model.SelectedProvider);
                         source.Process();
-                        var t = source.CanReset;
                     }
                 }
             });

@@ -139,7 +139,7 @@
                 </ScrollViewer>
             </Border>
 
-            <GridSplitter Margin="5,0" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="SaddleBrown" Height="3" />
+            <GridSplitter Margin="5,0" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Goldenrod" Height="3" />
         </Grid>
     </Border>
 </Window>

@@ -11,7 +11,7 @@ namespace TuneIn.Converters
         {
             var aid = (values[0] as TraceData)?.ActivityId.ToString();
             var selectedAid = (string)values[1];
-            return (selectedAid == null || string.IsNullOrEmpty(selectedAid)) ? true : aid.Equals(selectedAid, StringComparison.OrdinalIgnoreCase);
+            return (aid == null || string.IsNullOrEmpty(selectedAid)) ? true : aid.Equals(selectedAid, StringComparison.OrdinalIgnoreCase);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

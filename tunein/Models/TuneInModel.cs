@@ -18,6 +18,28 @@ namespace TuneIn.Models
         private ObservableCollection<string> hiddenColumns;
         private ObservableCollection<string> activityIds;
         private string selectedActivityId;
+        private ObservableCollection<string> eventNames;
+        private string selectedEventName;
+
+        public string SelectedEventName
+        {
+            get { return this.selectedEventName; }
+            set
+            {
+                this.selectedEventName = value;
+                this.FirePropertyChanged();
+            }
+        }
+
+        public ObservableCollection<string> EventNames
+        {
+            get { return this.eventNames; }
+            set
+            {
+                this.eventNames = value;
+                this.FirePropertyChanged();
+            }
+        }
 
         public string SelectedActivityId
         {
@@ -97,6 +119,7 @@ namespace TuneIn.Models
         {
             this.uiSyncCtx = uiSyncCtx;
             this.ResetActivityIds();
+            this.ResetEventNames();
         }
 
         public void LoadConfig()
@@ -122,6 +145,7 @@ namespace TuneIn.Models
         {
             this.Traces.Clear();
             this.ResetActivityIds();
+            this.ResetEventNames();
         }
 
         public void AddTrace(TraceData trace)
@@ -132,6 +156,14 @@ namespace TuneIn.Models
                 if (!this.ActivityIds.Contains(aid))
                 {
                     this.ActivityIds.Add(aid);
+                }
+            }, null);
+
+            uiSyncCtx.Send(x => {
+                string name = trace.Name.ToString();
+                if (!this.EventNames.Contains(name))
+                {
+                    this.EventNames.Add(name);
                 }
             }, null);
         }
@@ -150,6 +182,22 @@ namespace TuneIn.Models
             var defaultActivityId = "";
             this.ActivityIds.Add(defaultActivityId);
             this.SelectedActivityId = defaultActivityId;
+        }
+
+        public void ResetEventNames()
+        {
+            if (this.EventNames == null)
+            {
+                this.EventNames = new ObservableCollection<string>();
+            }
+            else
+            {
+                this.EventNames.Clear();
+            }
+
+            var defaultEventName = "";
+            this.EventNames.Add(defaultEventName);
+            this.SelectedEventName = defaultEventName;
         }
 
         private void FirePropertyChanged([CallerMemberName] string name = default(string))

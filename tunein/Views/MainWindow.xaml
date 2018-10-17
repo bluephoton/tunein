@@ -23,6 +23,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="auto"/>
@@ -81,14 +82,25 @@
                         </Button.Style>
                     </Button>
                     <Button Content="Clear" Padding="30,0" Margin="20,0,0,0" Click="ClearButton_Click" FontWeight="Bold"/>
-                    <Label Margin="100,0,0,0" Content="ActivityId Filter:"/>
-                    <ComboBox Margin="5,0" Width="300" ItemsSource="{Binding ActivityIds}" Text="{Binding SelectedActivityId}"
-                              FontFamily="Courier New" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <!-- Telemetry table -->
+            <!-- Filters -->
             <Border Grid.Row="3" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
+                <Expander Header="Filters" ExpandDirection="Down">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="ActivityId Filter:"/>
+                        <ComboBox Width="300" ItemsSource="{Binding ActivityIds}" Text="{Binding SelectedActivityId}"
+                                  FontFamily="Courier New" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        <Label Margin="20,0,0,0" Content="EventName Filter:"/>
+                        <ComboBox Width="300" ItemsSource="{Binding EventNames}" Text="{Binding SelectedEventName}"
+                                  FontFamily="Courier New" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                </Expander>
+            </Border>
+
+            <!-- Telemetry table -->
+            <Border Grid.Row="4" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat">
                 <DataGrid x:Name="gridTraces" ItemsSource="{Binding Traces}" MinHeight="600" IsReadOnly="True" AutoGenerateColumns="False" SelectionUnit="Cell">
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -135,6 +147,7 @@
                                         <MultiBinding Converter="{StaticResource aidMatch}">
                                             <Binding Path="DataContext" RelativeSource="{RelativeSource Mode=Self}"/>
                                             <Binding ElementName="wnd" Path="DataContext.SelectedActivityId" />
+                                            <Binding ElementName="wnd" Path="DataContext.SelectedEventName" />
                                         </MultiBinding>
                                     </DataTrigger.Binding>
                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -146,14 +159,14 @@
             </Border>
 
             <!-- Cell Text Viewer -->
-            <Border Grid.Row="5" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat" >
+            <Border Grid.Row="6" Padding="5" BorderThickness="1" CornerRadius="4" Background="Wheat" >
                 <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" >
                     <TextBlock x:Name="cellDetail" Margin="5" Padding="5" MinHeight="100" TextWrapping="Wrap" Background="White"
                                Text="{Binding ElementName=gridTraces, Path=CurrentCell, Converter={StaticResource cellToContent}}"/>
                 </ScrollViewer>
             </Border>
 
-            <GridSplitter Margin="5,0" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Goldenrod" Height="3" />
+            <GridSplitter Margin="5,0" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Goldenrod" Height="3" />
         </Grid>
     </Border>
 </Window>

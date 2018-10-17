@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\CaptionCtrl.xaml.cs" />
+    <Compile Include="Converters\ActivityIdMatchConverter.cs" />
     <Compile Include="Converters\CellValueConverter.cs" />
     <Compile Include="Converters\DictionaryToJsonConverter.cs" />
     <Compile Include="Models\ITuneIn.cs" />

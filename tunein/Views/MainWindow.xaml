@@ -6,7 +6,7 @@
         xmlns:cvs="clr-namespace:TuneIn.Converters"
         xmlns:ctls="clr-namespace:TuneIn.Controls"
         mc:Ignorable="d" AllowsTransparency="True" WindowStyle="None" SizeToContent="Manual" ResizeMode="NoResize"
-        Title="Tune In!" Background="Transparent">
+        Title="Tune In!" Background="Transparent" x:Name="wnd">
     <Window.Resources>
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -15,6 +15,7 @@
         <cvs:CellValueConverter x:Key="cellToContent"/>
         <cvs:DictionaryToJsonConverter x:Key="dictToJson"/>
         <BooleanToVisibilityConverter x:Key="bool2vis"/>
+        <cvs:ActivityIdMatchConverter x:Key="aidMatch"/>
     </Window.Resources>
     <Border Padding="5" BorderThickness="1" CornerRadius="8" Background="BurlyWood">
         <Grid>
@@ -51,7 +52,7 @@
                     <Label Content="Provider Name:" />
                     <ComboBox Margin="10, 0" Width="400" VerticalAlignment="Center" IsEditable="True"
                               ItemsSource="{Binding Providers}" Text="{Binding SelectedProvider}"
-                              IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" />
+                              IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" VerticalContentAlignment="Center"/>
                     <Button x:Name="listenButton" Padding="30,0" Margin="20,0,0,0" Click="ToggleListeningButton_Click" FontWeight="Bold">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
@@ -80,6 +81,9 @@
                         </Button.Style>
                     </Button>
                     <Button Content="Clear" Padding="30,0" Margin="20,0,0,0" Click="ClearButton_Click" FontWeight="Bold"/>
+                    <Label Margin="100,0,0,0" Content="ActivityId Filter:"/>
+                    <ComboBox Margin="5,0" Width="300" ItemsSource="{Binding ActivityIds}" Text="{Binding SelectedActivityId}"
+                              FontFamily="Courier New" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </StackPanel>
             </Border>
 
@@ -109,6 +113,7 @@
                         <Style TargetType="{x:Type DataGridRow}">
                             <Setter Property="FontSize" Value="14"/>
                             <Setter Property="MaxHeight" Value="200"/>
+                            <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Level}" Value="1">
                                     <Setter Property="Foreground" Value="White" />
@@ -124,6 +129,15 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Level}" Value="4">
                                     <Setter Property="Foreground" Value="Blue" />
+                                </DataTrigger>
+                                <DataTrigger Value="False">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource aidMatch}">
+                                            <Binding Path="DataContext" RelativeSource="{RelativeSource Mode=Self}"/>
+                                            <Binding ElementName="wnd" Path="DataContext.SelectedActivityId" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

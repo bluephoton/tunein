@@ -16,6 +16,28 @@ namespace TuneIn.Models
         private bool isListening { get; set; }
         private bool isHelpRequested;
         private ObservableCollection<string> hiddenColumns;
+        private ObservableCollection<string> activityIds;
+        private string selectedActivityId;
+
+        public string SelectedActivityId
+        {
+            get { return this.selectedActivityId; }
+            set
+            {
+                this.selectedActivityId = value;
+                this.FirePropertyChanged();
+            }
+        }
+
+        public ObservableCollection<string> ActivityIds
+        {
+            get { return this.activityIds; }
+            set
+            {
+                this.activityIds = value;
+                this.FirePropertyChanged();
+            }
+        }
 
         public ObservableCollection<string> HiddenColumns
         {
@@ -57,11 +79,6 @@ namespace TuneIn.Models
             }
         }
 
-        public TuneInModel(SynchronizationContext uiSyncCtx)
-        {
-            this.uiSyncCtx = uiSyncCtx;
-        }
-
         public string SelectedProvider
         {
             get { return this.selectedProvider; }
@@ -75,6 +92,12 @@ namespace TuneIn.Models
         public ObservableCollection<TraceData> Traces { get; set; } = new ObservableCollection<TraceData>();
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public TuneInModel(SynchronizationContext uiSyncCtx)
+        {
+            this.uiSyncCtx = uiSyncCtx;
+            this.ResetActivityIds();
+        }
 
         public void LoadConfig()
         {
@@ -98,21 +121,35 @@ namespace TuneIn.Models
         public void ClearLogs()
         {
             this.Traces.Clear();
-        }
-
-        public void StartListening()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void StopListening()
-        {
-            throw new System.NotImplementedException();
+            this.ResetActivityIds();
         }
 
         public void AddTrace(TraceData trace)
         {
             uiSyncCtx.Send(x => this.Traces.Add(trace), null);
+            uiSyncCtx.Send(x => {
+                string aid = trace.ActivityId.ToString();
+                if (!this.ActivityIds.Contains(aid))
+                {
+                    this.ActivityIds.Add(aid);
+                }
+            }, null);
+        }
+
+        public void ResetActivityIds()
+        {
+            if(this.ActivityIds == null)
+            {
+                this.ActivityIds = new ObservableCollection<string>();
+            }
+            else
+            {
+                this.ActivityIds.Clear();
+            }
+
+            var defaultActivityId = "";
+            this.ActivityIds.Add(defaultActivityId);
+            this.SelectedActivityId = defaultActivityId;
         }
 
         private void FirePropertyChanged([CallerMemberName] string name = default(string))

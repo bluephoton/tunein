@@ -42,7 +42,7 @@
                         <Run FontStyle="Italic" Foreground="Black" FontWeight="SemiBold" Text="TuneIn.Config"/>
                         <Run Text=", you may find something useful there!"/>
                         <Run Text="For more information, suggestions, or to report a bug, please contact"/>
-                        <Run FontWeight="SemiBold" Foreground="Blue" Text="Mohamed Enein (menein@microsoft.com)"/>
+                        <Run FontWeight="SemiBold" Foreground="Blue" Text="Mohamed Enein (farbluestar@hotmail.com)"/>
                     </TextBlock>
                 </StackPanel>
             </Border>
